@@ -45,7 +45,7 @@ class UpdateNoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentNote = args.note!!
+        currentNote = args.note
 
         binding.etTitleUpdate.setText(currentNote.noteTitle)
         binding.etBodyUpdate.setText(currentNote.noteBody)
