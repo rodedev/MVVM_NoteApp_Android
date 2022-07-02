@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentHomeBinding
+import com.example.noteapp.model.Note
 import com.example.noteapp.screens.adapter.NoteAdapter
 import com.example.noteapp.screens.viewmodel.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,11 +62,18 @@ class HomeFragment : Fragment() {
 
         noteViewModel.notes.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            visibilityUI(it)
         }
     }
 
-    private fun visibilityList() {
-        
+    private fun visibilityUI(note: List<Note>) {
+        if (note.isNotEmpty()) {
+            binding.cardView.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+        } else {
+            binding.cardView.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
