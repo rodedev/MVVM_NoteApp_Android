@@ -10,6 +10,7 @@ import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNewNoteBinding
 import com.example.noteapp.model.Note
 import com.example.noteapp.screens.viewmodel.NoteViewModel
+import com.example.noteapp.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,17 +36,42 @@ class NewNoteFragment : Fragment() {
     }
 
     private fun saveNote() {
-        val title = binding.etTitle.text.toString().trim()
-        val body = binding.etBody.text.toString().trim()
 
-        if (title.isNotEmpty()) {
-            val note = Note(0, title, body)
+        if (validate()) {
+            val note = Note(
+                id = 0,
+                noteTitle = binding.etTitle.text.toString().trim(),
+                noteBody = binding.etBody.text.toString().trim()
+            )
             noteViewModel.addNote(note)
             findNavController().navigate(R.id.action_newNoteFragment_to_homeFragment)
-        } else {
-            Toast.makeText(context, "Add title and note body", Toast.LENGTH_LONG).show()
         }
 
+        /*else {
+            Toast.makeText(context, "Add title and note body", Toast.LENGTH_LONG).show()
+        }
+    
+        val titleNote = binding.etTitle.text.toString().trim()
+        val bodyNote = binding.etBody.text.toString().trim()*/
+    }
+
+    private fun validate(): Boolean {
+        return when {
+            binding.etTitle.text!!.isEmpty() -> binding.etTitle.run {
+                requestFocus()
+                "Se requiere un titulo"
+            }
+            binding.etBody.text!!.isEmpty() -> binding.etBody.run {
+                requestFocus()
+                "Describa la nota"
+            }
+            else -> ""
+        }.run {
+            if (this.isNotEmpty()) {
+                requireView().showSnackbar(this)
+            }
+            this.isEmpty()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -13,6 +13,7 @@ import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentUpdateNoteBinding
 import com.example.noteapp.model.Note
 import com.example.noteapp.screens.viewmodel.NoteViewModel
+import com.example.noteapp.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,16 +52,40 @@ class UpdateNoteFragment : Fragment() {
         binding.etBodyUpdate.setText(currentNote.noteBody)
 
         binding.fbDone.setOnClickListener {
-            val title = binding.etTitleUpdate.text.toString().trim()
-            val body = binding.etBodyUpdate.text.toString().trim()
 
-            if (title.isNotEmpty()) {
-                val note = Note(currentNote.id, title, body)
+            if (validate()) {
+                val note = Note(
+                    id = currentNote.id,
+                    noteTitle = binding.etTitleUpdate.text.toString().trim(),
+                    noteBody = binding.etBodyUpdate.text.toString().trim()
+                )
                 noteViewModel.updateNote(note)
                 findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
-            } else {
+            }
+            /*else {
                 Toast.makeText(context, "Enter a note title please", Toast.LENGTH_LONG).show()
             }
+            val title = binding.etTitleUpdate.text.toString().trim()
+            val body = binding.etBodyUpdate.text.toString().trim()*/
+        }
+    }
+
+    private fun validate(): Boolean {
+        return when {
+            binding.etTitleUpdate.text!!.isEmpty() -> binding.etTitleUpdate.run {
+                requestFocus()
+                "Se requiere un titulo"
+            }
+            binding.etBodyUpdate.text!!.isEmpty() -> binding.etBodyUpdate.run {
+                requestFocus()
+                "Describa la nota"
+            }
+            else -> ""
+        }.run {
+            if (this.isNotEmpty()) {
+                requireView().showSnackbar(this)
+            }
+            this.isEmpty()
         }
     }
 
