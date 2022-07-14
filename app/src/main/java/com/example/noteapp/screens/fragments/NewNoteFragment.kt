@@ -46,13 +46,6 @@ class NewNoteFragment : Fragment() {
             noteViewModel.addNote(note)
             findNavController().navigate(R.id.action_newNoteFragment_to_homeFragment)
         }
-
-        /*else {
-            Toast.makeText(context, "Add title and note body", Toast.LENGTH_LONG).show()
-        }
-    
-        val titleNote = binding.etTitle.text.toString().trim()
-        val bodyNote = binding.etBody.text.toString().trim()*/
     }
 
     private fun validate(): Boolean {

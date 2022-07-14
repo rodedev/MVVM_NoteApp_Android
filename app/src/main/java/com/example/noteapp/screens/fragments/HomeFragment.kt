@@ -47,7 +47,10 @@ class HomeFragment : Fragment() {
     private fun setUpRecyclerView() {
         val adapter = NoteAdapter()
         binding.recyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+            )
             setHasFixedSize(true)
         }
         binding.recyclerView.adapter = adapter

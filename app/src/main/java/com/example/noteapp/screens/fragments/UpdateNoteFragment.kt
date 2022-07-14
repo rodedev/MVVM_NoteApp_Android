@@ -64,9 +64,7 @@ class UpdateNoteFragment : Fragment() {
             }
             /*else {
                 Toast.makeText(context, "Enter a note title please", Toast.LENGTH_LONG).show()
-            }
-            val title = binding.etTitleUpdate.text.toString().trim()
-            val body = binding.etBodyUpdate.text.toString().trim()*/
+            }*/
         }
     }
 
