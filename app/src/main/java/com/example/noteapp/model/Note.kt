@@ -12,6 +12,10 @@ data class Note(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "note_title")
     val noteTitle: String,
-    @ColumnInfo(name = "noe_body")
+    @ColumnInfo(name = "note_body")
     val noteBody: String
-): Parcelable
+): Parcelable /*{
+    /*companion object {
+        val noteColors = listOf()
+    }*/
+}*/

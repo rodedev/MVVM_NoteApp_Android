@@ -1,5 +1,6 @@
 package com.example.noteapp.data.data_source
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.noteapp.model.Note
 import kotlinx.coroutines.flow.Flow
@@ -10,8 +11,8 @@ interface NoteDao {
     @Query("SELECT * FROM note")
     fun getAllNotes(): Flow<List<Note>>
 
-    @Query("SELECT * FROM note WHERE id= :id")
-    suspend fun getNoteById(id: Int): Note?
+    @Query("SELECT * FROM note WHERE note_title LIKE :query OR note_body LIKE :query")
+    fun searchNote(query: String?): LiveData<List<Note>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(note: Note)

@@ -68,23 +68,15 @@ class UpdateNoteFragment : Fragment() {
         }
     }
 
-    private fun validate(): Boolean {
-        return when {
-            binding.etTitleUpdate.text!!.isEmpty() -> binding.etTitleUpdate.run {
-                requestFocus()
-                "Se requiere un titulo"
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_menu -> {
+                deleteNote()
+                true
             }
-            binding.etBodyUpdate.text!!.isEmpty() -> binding.etBodyUpdate.run {
-                requestFocus()
-                "Describa la nota"
-            }
-            else -> ""
-        }.run {
-            if (this.isNotEmpty()) {
-                requireView().showSnackbar(this)
-            }
-            this.isEmpty()
+            else -> return super.onOptionsItemSelected(item)
         }
+
     }
 
     private fun deleteNote() {
@@ -101,15 +93,21 @@ class UpdateNoteFragment : Fragment() {
         }.create().show()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.delete_menu -> {
-                deleteNote()
-                true
+    private fun validate(): Boolean {
+        return when {
+            binding.etTitleUpdate.text!!.isEmpty() -> binding.etTitleUpdate.run {
+                "Se requiere un titulo"
             }
-            else -> return super.onOptionsItemSelected(item)
+            binding.etBodyUpdate.text!!.isEmpty() -> binding.etBodyUpdate.run {
+                "Describa la nota"
+            }
+            else -> ""
+        }.run {
+            if (this.isNotEmpty()) {
+                requireView().showSnackbar(this)
+            }
+            this.isEmpty()
         }
-
     }
 
     override fun onDestroyView() {

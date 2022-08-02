@@ -17,22 +17,14 @@ class NoteRepository @Inject constructor(
         } catch (e: Exception) {
             print("Error $e")
         }
-
     }
 
-    suspend fun getNoteById(id: Int): Note? {
-        return noteDao.getNoteById(id)
-    }
+    fun searchNote(query: String?) = noteDao.searchNote(query)
 
-    suspend fun addNote(note: Note) {
-        noteDao.addNote(note)
-    }
+    suspend fun addNote(note: Note) = noteDao.addNote(note)
 
-    suspend fun deleteNote(note: Note) {
-        noteDao.deleteNote(note)
-    }
+    suspend fun deleteNote(note: Note) = noteDao.deleteNote(note)
 
-    suspend fun updateNote(note: Note) {
-        noteDao.updateNote(note)
-    }
+    suspend fun updateNote(note: Note) = noteDao.updateNote(note)
+
 }

@@ -2,6 +2,7 @@ package com.example.noteapp.screens.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,12 +15,13 @@ import com.example.noteapp.screens.viewmodel.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val noteViewModel: NoteViewModel by viewModels()
+    private lateinit var noteAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +47,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        val adapter = NoteAdapter()
+        noteAdapter = NoteAdapter()
         binding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(
                 2,
                 StaggeredGridLayoutManager.VERTICAL
             )
             setHasFixedSize(true)
+            adapter = noteAdapter
         }
-        binding.recyclerView.adapter = adapter
 
-        adapter.onItemClickListener = {
+        noteAdapter.onItemClickListener = {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToUpdateNoteFragment(
                     it
@@ -64,7 +66,7 @@ class HomeFragment : Fragment() {
         }
 
         noteViewModel.notes.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            noteAdapter.submitList(it)
             visibilityUI(it)
         }
     }
@@ -81,11 +83,36 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
         inflater.inflate(R.menu.home_menu, menu)
+        val mMenuSearch = menu.findItem(R.id.menu_search).actionView as SearchView
+        mMenuSearch.isSubmitButtonEnabled = false
+        mMenuSearch.setOnQueryTextListener(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        /*query?.let {
+            searchNotes(it)
+        }*/
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        newText?.let {
+            searchNotes(it)
+        }
+        return true
+    }
+
+    private fun searchNotes(query: String?) {
+        val searchQuery = "%$query%"
+        noteViewModel.searchNote(searchQuery).observe(viewLifecycleOwner, {
+            noteAdapter.submitList(it)
+        })
     }
 }

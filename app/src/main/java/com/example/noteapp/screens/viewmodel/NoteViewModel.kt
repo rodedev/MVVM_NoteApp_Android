@@ -14,38 +14,20 @@ class NoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
+    fun searchNote(query: String?) = noteRepository.searchNote(query)
+
     val notes = noteRepository.getAllNotes().asLiveData()
 
-    fun addNote(note: Note) {
-        viewModelScope.launch {
-            noteRepository.addNote(note)
-        }
+    fun addNote(note: Note) = viewModelScope.launch {
+        noteRepository.addNote(note)
     }
 
-    fun deleteNote(note: Note) {
-        viewModelScope.launch {
-            noteRepository.deleteNote(note)
-        }
+    fun deleteNote(note: Note) = viewModelScope.launch {
+        noteRepository.deleteNote(note)
     }
 
-    fun updateNote(note: Note) {
-        viewModelScope.launch {
-            noteRepository.updateNote(note)
-        }
+    fun updateNote(note: Note) = viewModelScope.launch {
+        noteRepository.updateNote(note)
     }
+
 }
-
-/*
-private val _notes = MutableLiveData<List<Note>>()
-val notes: LiveData<List<Note>> get() = _notes
-
-private val _notes = MutableStateFlow<List<Note>>(emptyList())
-val notes: StateFlow<List<Note>> = _notes.asStateFlow()
-
-init {
-    viewModelScope.launch {
-        noteRepository.getAllNotes().collect {
-            _notes.value = it
-        }
-    }
-}*/
