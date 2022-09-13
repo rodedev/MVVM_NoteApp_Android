@@ -14,9 +14,9 @@ class NoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
-    fun searchNote(query: String?) = noteRepository.searchNote(query)
+    fun searchNote(query: String?): Flow<List<Note>> = noteRepository.searchNote(query)
 
-    val notes = noteRepository.getAllNotes().asLiveData()
+    fun getAllNotes(): Flow<List<Note>> = noteRepository.getAllNotes()
 
     fun addNote(note: Note) = viewModelScope.launch {
         noteRepository.addNote(note)
@@ -30,4 +30,5 @@ class NoteViewModel @Inject constructor(
         noteRepository.updateNote(note)
     }
 
+    //val notes = noteRepository.getAllNotes().asLiveData()
 }

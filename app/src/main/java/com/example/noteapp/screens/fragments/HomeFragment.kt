@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.R
@@ -13,6 +14,8 @@ import com.example.noteapp.model.Note
 import com.example.noteapp.screens.adapter.NoteAdapter
 import com.example.noteapp.screens.viewmodel.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -65,10 +68,13 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             )
         }
 
-        noteViewModel.notes.observe(viewLifecycleOwner) {
-            noteAdapter.submitList(it)
-            visibilityUI(it)
+        lifecycle.coroutineScope.launch {
+            noteViewModel.getAllNotes().collect {
+                noteAdapter.submitList(it)
+                visibilityUI(it)
+            }
         }
+
     }
 
     private fun visibilityUI(note: List<Note>) {
@@ -111,8 +117,10 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun searchNotes(query: String?) {
         val searchQuery = "%$query%"
-        noteViewModel.searchNote(searchQuery).observe(viewLifecycleOwner, {
-            noteAdapter.submitList(it)
-        })
+        lifecycle.coroutineScope.launch {
+            noteViewModel.searchNote(searchQuery).collect() {
+                noteAdapter.submitList(it)
+            }
+        }
     }
 }

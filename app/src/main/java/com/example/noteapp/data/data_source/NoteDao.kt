@@ -12,7 +12,7 @@ interface NoteDao {
     fun getAllNotes(): Flow<List<Note>>
 
     @Query("SELECT * FROM note WHERE note_title LIKE :query OR note_body LIKE :query")
-    fun searchNote(query: String?): LiveData<List<Note>>
+    fun searchNote(query: String?): Flow<List<Note>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(note: Note)

@@ -12,14 +12,12 @@ class NoteRepository @Inject constructor(
 ) {
 
     fun getAllNotes(): Flow<List<Note>> = flow {
-        try {
+        while (true) {
             emitAll(noteDao.getAllNotes())
-        } catch (e: Exception) {
-            print("Error $e")
         }
     }
 
-    fun searchNote(query: String?) = noteDao.searchNote(query)
+    fun searchNote(query: String?): Flow<List<Note>> = noteDao.searchNote(query)
 
     suspend fun addNote(note: Note) = noteDao.addNote(note)
 

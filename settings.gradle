@@ -4,7 +4,7 @@ pluginManagement {
         google()
         mavenCentral()
     }
-    resolutionStrategy {
+    /*resolutionStrategy {
         eachPlugin {
             if( requested.id.id == 'dagger.hilt.android.plugin') {
                 useModule("com.google.dagger:hilt-android-gradle-plugin:2.41")
@@ -13,7 +13,7 @@ pluginManagement {
                 useModule("androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2")
             }
         }
-    }
+    }*/
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)

@@ -74,7 +74,7 @@ class UpdateNoteFragment : Fragment() {
                 deleteNote()
                 true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> false
         }
 
     }
