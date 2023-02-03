@@ -1,5 +1,6 @@
 package com.example.noteapp.data.repository
 
+import android.util.Log
 import com.example.noteapp.data.data_source.NoteDao
 import com.example.noteapp.model.Note
 import kotlinx.coroutines.flow.Flow
@@ -12,8 +13,10 @@ class NoteRepository @Inject constructor(
 ) {
 
     fun getAllNotes(): Flow<List<Note>> = flow {
-        while (true) {
+        try {
             emitAll(noteDao.getAllNotes())
+        }catch (e: Exception) {
+            Log.d("Error", e.toString())
         }
     }
 
