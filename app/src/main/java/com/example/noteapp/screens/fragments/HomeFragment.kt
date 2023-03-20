@@ -45,7 +45,8 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         setUpRecyclerView()
 
         binding.fobAddNote.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_newNoteFragment)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment())
+            //R.id.action_homeFragment_to_newNoteFragment
         }
     }
 

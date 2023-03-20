@@ -1,6 +1,5 @@
 package com.example.noteapp.data.data_source
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.noteapp.model.Note
 import kotlinx.coroutines.flow.Flow
